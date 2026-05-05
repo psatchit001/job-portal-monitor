@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Portal Monitor</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h1>Career Monitor</h1>
+        <p class="subtitle">Your dream companies, one place</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-value" id="stat-new">—</span>
+          <span class="stat-label">New</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-saved">—</span>
+          <span class="stat-label">Saved</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-applied">—</span>
+          <span class="stat-label">Applied</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat-total">—</span>
+          <span class="stat-label">Total</span>
+        </div>
+      </div>
+
+      <div class="last-run" id="last-run-info">Last run: checking…</div>
+
+      <button class="btn-scrape" id="btn-scrape" onclick="triggerScrape()">
+        ▶ Run Now
+      </button>
+
+      <div class="section-label">Companies</div>
+      <ul class="company-list" id="company-list">
+        <li class="loading-placeholder">Loading…</li>
+      </ul>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <input
+          class="search-input"
+          id="search-input"
+          type="text"
+          placeholder="Search job titles…"
+          oninput="debounceSearch()"
+        />
+
+        <select id="filter-status" onchange="loadJobs()">
+          <option value="">All statuses</option>
+          <option value="new">New</option>
+          <option value="saved">Saved</option>
+          <option value="applied">Applied</option>
+          <option value="not_interested">Not Interested</option>
+        </select>
+
+        <select id="filter-seniority" onchange="loadJobs()">
+          <option value="">All levels</option>
+          <option value="internship">Internship</option>
+          <option value="new_grad">New Grad</option>
+          <option value="entry_level">Entry Level</option>
+          <option value="junior">Junior</option>
+          <option value="unspecified">Unspecified</option>
+          <option value="senior+">Senior+</option>
+        </select>
+
+        <select id="filter-company" onchange="loadJobs()">
+          <option value="">All companies</option>
+        </select>
+
+        <label class="toggle-label">
+          <input type="checkbox" id="matched-only" checked onchange="loadJobs()" />
+          Matched only
+        </label>
+      </div>
+
+      <!-- Job count -->
+      <div class="results-meta" id="results-meta"></div>
+
+      <!-- Job list -->
+      <div class="job-list" id="job-list">
+        <div class="empty-state">Run a scrape to see results.</div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
