@@ -101,6 +101,14 @@ async def run_all_scrapers() -> dict:
 
     async with async_playwright() as pw:
         browser = await pw.chromium.launch(headless=True)
+        context = await browser.new_context(
+            ignore_https_errors=True,
+            user_agent=(
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/122.0.0.0 Safari/537.36"
+            ),
+        )
 
         for ScraperClass in SCRAPERS:
             scraper = ScraperClass()
@@ -108,14 +116,7 @@ async def run_all_scrapers() -> dict:
             if not company or not company.enabled:
                 continue
 
-            page = await browser.new_page()
-            await page.set_extra_http_headers({
-                "User-Agent": (
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/122.0.0.0 Safari/537.36"
-                )
-            })
+            page = await context.new_page()
 
             try:
                 print(f"[runner] Scraping {scraper.name}...")
@@ -142,6 +143,7 @@ async def run_all_scrapers() -> dict:
             finally:
                 await page.close()
 
+        await context.close()
         await browser.close()
 
     run.completed_at = datetime.utcnow()
