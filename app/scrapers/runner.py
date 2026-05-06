@@ -100,14 +100,28 @@ async def run_all_scrapers() -> dict:
     errors = []
 
     async with async_playwright() as pw:
-        browser = await pw.chromium.launch(headless=True)
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+            ],
+        )
         context = await browser.new_context(
             ignore_https_errors=True,
             user_agent=(
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/122.0.0.0 Safari/537.36"
+                "Chrome/124.0.0.0 Safari/537.36"
             ),
+            viewport={"width": 1440, "height": 900},
+            locale="en-US",
+            timezone_id="America/Chicago",
+        )
+        # Remove the webdriver flag that bot detectors check first
+        await context.add_init_script(
+            "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
         )
 
         for ScraperClass in SCRAPERS:
