@@ -85,6 +85,20 @@ body {
 .btn-scrape:hover { opacity: 0.85; }
 .btn-scrape:disabled { opacity: 0.5; cursor: not-allowed; }
 
+.btn-clear {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: var(--radius);
+  padding: 8px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-clear:hover { background: #2d1515; }
+.btn-clear:disabled { opacity: 0.5; cursor: not-allowed; }
+
 .section-label {
   font-size: 11px;
   font-weight: 700;
@@ -187,6 +201,30 @@ select:focus { border-color: var(--accent); }
   font-size: 14px;
   padding: 40px 0;
   text-align: center;
+}
+
+/* ── Company partition header ─────────────────────────────────────────────── */
+.company-partition {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 2px;
+  margin-top: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.company-partition:first-child { margin-top: 0; }
+
+.company-partition-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.company-partition-count {
+  font-size: 11px;
+  color: var(--muted);
 }
 
 /* ── Job card ─────────────────────────────────────────────────────────────── */
