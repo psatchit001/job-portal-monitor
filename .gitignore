@@ -1,6 +1,9 @@
 # Environment variables — never commit this
 .env
 
+# Debug HTML snapshots — scraped pages may embed third-party API keys
+debug/
+
 # Database — contains your job data, no need to track in git
 jobs.db
 
