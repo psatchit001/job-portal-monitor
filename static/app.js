@@ -119,7 +119,28 @@ function renderJobs(jobs, total) {
     return;
   }
 
-  list.innerHTML = jobs.map(j => jobCardHTML(j)).join("");
+  const activeCompanyFilter = document.getElementById("filter-company").value;
+  if (activeCompanyFilter) {
+    list.innerHTML = jobs.map(j => jobCardHTML(j)).join("");
+  } else {
+    // Group by company with partition headers
+    const groups = [];
+    const indexMap = {};
+    for (const j of jobs) {
+      if (indexMap[j.company_id] === undefined) {
+        indexMap[j.company_id] = groups.length;
+        groups.push({ company: j.company, jobs: [] });
+      }
+      groups[indexMap[j.company_id]].jobs.push(j);
+    }
+    list.innerHTML = groups.map(g => `
+      <div class="company-partition">
+        <span class="company-partition-name">${esc(g.company)}</span>
+        <span class="company-partition-count">${g.jobs.length} job${g.jobs.length !== 1 ? "s" : ""}</span>
+      </div>
+      ${g.jobs.map(j => jobCardHTML(j)).join("")}
+    `).join("");
+  }
 
   // Pagination
   const totalPages = Math.ceil(total / PAGE_SIZE);
@@ -213,6 +234,18 @@ async function setStatus(jobId, status) {
 
   loadJobs();
   loadStats();
+}
+
+async function clearDashboard() {
+  if (!confirm("Clear all job postings from the dashboard? This cannot be undone.")) return;
+  const btn = document.getElementById("btn-clear");
+  btn.disabled = true;
+  btn.textContent = "Clearing…";
+  await api("/api/jobs", { method: "DELETE" });
+  btn.disabled = false;
+  btn.textContent = "✕ Clear Dashboard";
+  loadStats();
+  loadJobs();
 }
 
 async function triggerScrape() {

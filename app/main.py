@@ -99,6 +99,13 @@ def get_jobs(
     }
 
 
+@app.delete("/api/jobs")
+def clear_all_jobs(db: Session = Depends(get_db)):
+    deleted = db.query(Job).delete()
+    db.commit()
+    return {"deleted": deleted}
+
+
 @app.patch("/api/jobs/{job_id}/status")
 def update_job_status(job_id: int, body: dict, db: Session = Depends(get_db)):
     new_status = body.get("status")
