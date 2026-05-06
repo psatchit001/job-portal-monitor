@@ -1,5 +1,8 @@
+import os
 from playwright.async_api import Page
 from app.scrapers.base import BaseScraper, JobListing
+
+DEBUG_DIR = "debug"
 
 
 class TCSScraper(BaseScraper):
@@ -11,6 +14,13 @@ class TCSScraper(BaseScraper):
         try:
             await page.goto(self.base_url, wait_until="networkidle", timeout=45000)
             await page.wait_for_timeout(3000)
+
+            os.makedirs(DEBUG_DIR, exist_ok=True)
+            html = await page.content()
+            debug_path = os.path.join(DEBUG_DIR, "tcs_rendered.html")
+            with open(debug_path, "w", encoding="utf-8") as f:
+                f.write(html)
+            print(f"[TCS] Saved rendered HTML -> {debug_path}  ({len(html):,} bytes)")
 
             # TCS uses a custom Angular portal — look for a search input
             search = await page.query_selector("input[placeholder*='Search'], input[placeholder*='search'], input[type='search']")

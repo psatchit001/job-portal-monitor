@@ -1,5 +1,8 @@
+import os
 from playwright.async_api import Page
 from app.scrapers.base import BaseScraper, JobListing
+
+DEBUG_DIR = "debug"
 
 
 class EchoStarScraper(BaseScraper):
@@ -8,6 +11,7 @@ class EchoStarScraper(BaseScraper):
 
     async def scrape(self, page: Page) -> list[JobListing]:
         jobs = []
+        first = True
         for term in self.SEARCH_TERMS:
             try:
                 await page.goto(
@@ -15,6 +19,15 @@ class EchoStarScraper(BaseScraper):
                     wait_until="networkidle", timeout=45000,
                 )
                 await page.wait_for_timeout(3000)
+
+                if first:
+                    os.makedirs(DEBUG_DIR, exist_ok=True)
+                    html = await page.content()
+                    debug_path = os.path.join(DEBUG_DIR, "echostar_rendered.html")
+                    with open(debug_path, "w", encoding="utf-8") as f:
+                        f.write(html)
+                    print(f"[EchoStar] Saved rendered HTML -> {debug_path}  ({len(html):,} bytes)")
+                    first = False
 
                 # iCIMS portal
                 cards = await page.query_selector_all(

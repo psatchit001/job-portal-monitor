@@ -1,5 +1,8 @@
+import os
 from playwright.async_api import Page
 from app.scrapers.base import BaseScraper, JobListing
+
+DEBUG_DIR = "debug"
 
 
 class AMDScraper(BaseScraper):
@@ -8,6 +11,7 @@ class AMDScraper(BaseScraper):
 
     async def scrape(self, page: Page) -> list[JobListing]:
         jobs = []
+        first = True
         for term in self.SEARCH_TERMS:
             try:
                 await page.goto(
@@ -15,6 +19,15 @@ class AMDScraper(BaseScraper):
                     wait_until="networkidle", timeout=45000,
                 )
                 await page.wait_for_timeout(2500)
+
+                if first:
+                    os.makedirs(DEBUG_DIR, exist_ok=True)
+                    html = await page.content()
+                    debug_path = os.path.join(DEBUG_DIR, "amd_rendered.html")
+                    with open(debug_path, "w", encoding="utf-8") as f:
+                        f.write(html)
+                    print(f"[AMD] Saved rendered HTML -> {debug_path}  ({len(html):,} bytes)")
+                    first = False
 
                 cards = await page.query_selector_all("li[class*='jobs-list-item'], .job-list-item")
                 for card in cards:

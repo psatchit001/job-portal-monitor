@@ -1,5 +1,8 @@
+import os
 from playwright.async_api import Page
 from app.scrapers.base import BaseScraper, JobListing
+
+DEBUG_DIR = "debug"
 
 
 class HCLTechScraper(BaseScraper):
@@ -8,10 +11,20 @@ class HCLTechScraper(BaseScraper):
 
     async def scrape(self, page: Page) -> list[JobListing]:
         jobs = []
-        for term in self.SEARCH_TERMS:
+        first = True
+        for term in self.SEARCH_TERMS[:3]:  # limit requests on custom portals
             try:
                 await page.goto(self.base_url, wait_until="networkidle", timeout=45000)
                 await page.wait_for_timeout(2000)
+
+                if first:
+                    os.makedirs(DEBUG_DIR, exist_ok=True)
+                    html = await page.content()
+                    debug_path = os.path.join(DEBUG_DIR, "hcltech_rendered.html")
+                    with open(debug_path, "w", encoding="utf-8") as f:
+                        f.write(html)
+                    print(f"[HCL Tech] Saved rendered HTML -> {debug_path}  ({len(html):,} bytes)")
+                    first = False
 
                 # SAP SuccessFactors — look for search input
                 search = await page.query_selector(
