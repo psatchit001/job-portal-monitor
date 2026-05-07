@@ -25,16 +25,12 @@ from app.scrapers.companies.nvidia import NVIDIAScraper
 from app.scrapers.companies.intel import IntelScraper
 from app.scrapers.companies.emerson import EmersonScraper
 from app.scrapers.companies.samsung import SamsungScraper
-from app.scrapers.companies.apple import AppleScraper
-from app.scrapers.companies.google import GoogleScraper
 from app.scrapers.companies.hcltech import HCLTechScraper
-from app.scrapers.companies.marvell import MarvellScraper
 
 SCRAPERS = [
     TIScraper, AMDScraper, MicronScraper, MicrochipScraper,
     InfineonScraper, AnalogDevicesScraper, NVIDIAScraper, IntelScraper,
-    EmersonScraper, SamsungScraper, AppleScraper,
-    GoogleScraper, HCLTechScraper, MarvellScraper,
+    EmersonScraper, SamsungScraper, HCLTechScraper,
 ]
 
 
