@@ -1,5 +1,5 @@
 """
-Orchestrates all 17 company scrapers.
+Orchestrates company scrapers.
 Runs them sequentially (one browser instance, one company at a time).
 Saves results to DB, runs semantic matching, sends Discord notifications.
 """
@@ -25,20 +25,16 @@ from app.scrapers.companies.nvidia import NVIDIAScraper
 from app.scrapers.companies.intel import IntelScraper
 from app.scrapers.companies.emerson import EmersonScraper
 from app.scrapers.companies.samsung import SamsungScraper
-from app.scrapers.companies.tcs import TCSScraper
 from app.scrapers.companies.apple import AppleScraper
-from app.scrapers.companies.cognizant import CognizantScraper
 from app.scrapers.companies.google import GoogleScraper
 from app.scrapers.companies.hcltech import HCLTechScraper
 from app.scrapers.companies.marvell import MarvellScraper
-from app.scrapers.companies.echostar import EchoStarScraper
 
 SCRAPERS = [
     TIScraper, AMDScraper, MicronScraper, MicrochipScraper,
     InfineonScraper, AnalogDevicesScraper, NVIDIAScraper, IntelScraper,
-    EmersonScraper, SamsungScraper, TCSScraper, AppleScraper,
-    CognizantScraper, GoogleScraper, HCLTechScraper, MarvellScraper,
-    EchoStarScraper,
+    EmersonScraper, SamsungScraper, AppleScraper,
+    GoogleScraper, HCLTechScraper, MarvellScraper,
 ]
 
 
