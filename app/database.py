@@ -87,10 +87,7 @@ COMPANIES = [
     {"name": "Intel", "url": "https://intel.wd1.myworkdayjobs.com/External", "industry": "semiconductor"},
     {"name": "Emerson", "url": "https://hdjq.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs", "industry": "technology"},
     {"name": "Samsung", "url": "https://sec.wd3.myworkdayjobs.com/Samsung_Careers", "industry": "semiconductor"},
-    {"name": "Apple", "url": "https://jobs.apple.com/en-us/search?location=united-states-USA", "industry": "technology"},
-    {"name": "Google", "url": "https://www.google.com/about/careers/applications/", "industry": "technology"},
     {"name": "HCL Tech", "url": "https://careers.hcltech.com/go/NonTPDemand/9558355/", "industry": "technology"},
-    {"name": "Marvell", "url": "https://marvell.wd1.myworkdayjobs.com/MarvellCareers", "industry": "semiconductor"},
 ]
 
 
